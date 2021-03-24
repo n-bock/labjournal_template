@@ -1,0 +1,80 @@
+% !TeX encoding = UTF-8
+
+% Benedikt Klein, Uni Marburg
+% Nicolas Bock, TUM
+
+\documentclass[fontsize=10pt, parskip]{scrreprt}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\usepackage{luacode}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{typearea}
+\usepackage{scrpage2}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{tabu}
+\usepackage{mhchem}
+
+\renewcommand{\baselinestretch}{1.3} 
+\geometry{a4paper, left=15mm, right=15mm, top=15mm, landscape, bottom=15mm, includeheadfoot, bindingoffset=12mm, footskip=10mm, twoside}
+\pagestyle{scrheadings}
+\ohead{\fbox{
+	\begin{tabular}{l}
+		date \hspace{2cm} 
+	\end{tabular}
+	}}
+
+\ihead{\fbox{
+	\begin{tabular}{lllll}
+		   WE \hspace{2cm} & CE \hspace{2cm} & RE \hspace{2cm} & Electrolyte \hspace{5cm} & pH \hspace{1cm}   
+	\end{tabular}
+	}}
+
+\def\tab{
+	\begin{tabu}
+		{|[1pt]p{4cm}|p{3.5cm}|p{3.5cm}|p{1cm}p{1cm}p{1cm}|p{8.5cm}|[1pt]}
+		\tabucline[1pt]{1-8}
+		$\square$ ~ECSTM ~ $\square$ ~RDE &  \multicolumn{2}{l}{id} \vline &  $\square$ Ar & $\square$ \ce{O2} & $\square$ \ce{H2}  & sketch\\ 
+		\cline{1-3}
+		method & scans &  rate & $\square$ \ce{CO} & \multicolumn{2}{l}{ $\square$ \ce{CO2}} \vline & \vline \\  
+		\cline{1-6}
+		rpm & & & & & &\\ 
+		\cline{1-6}
+		\multicolumn{6}{|[1pt]p{14cm}|}{comment} & \\ 
+		\multicolumn{6}{|[1pt]p{14cm}|}{} &  \\
+		\tabucline[1pt]{1-8}
+	\end{tabu}
+	\\[0.2cm]
+}
+
+\begin{luacode}
+	function table(rows, pages)
+		for i = 1, rows do
+			for p = 1, pages do
+				tex.sprint("\\tab")
+			end
+		end
+	end
+\end{luacode}
+
+\begin{document}
+	\thispagestyle{empty}
+	\begin{center}
+		\includegraphics[height=0.15\textheight]{logo.png}\hspace{5cm}
+		\includegraphics[height=0.15\textheight]{tum_fac.png}\\\vspace{10mm}
+		\Large{Lehrstuhl Physikalische Chemie -- Prof. Dr. U. Heiz}\\\vspace{20mm}
+		\Huge{\textbf{ECSTM -- Labjournal}}\\\vspace{10mm}
+		\Large{\textbf{Period:}}\hspace*{100mm}\vspace{45mm}
+	\end{center}
+	\begin{flushleft}
+		\textbf{Note:} Start a new page, if you change WE, CE, RE, or electrolyte. Fill out the first row of a double page completely. For the following rows write only changed values.
+	\end{flushleft}
+	\clearpage~
+	\thispagestyle{empty}
+	\clearpage
+	\setcounter{page}{1}
+	\directlua{table(5, 3)} %rows per page, number of pages
+\end{document}
